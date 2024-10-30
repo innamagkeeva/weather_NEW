@@ -66,6 +66,7 @@ body {
   width: 30px;
   height: 30px;
   padding-right: 5px;
+  cursor: pointer;
   position: relative;
 }
 
@@ -115,6 +116,7 @@ body {
 .part__footer-button {
   background-color: white;
   border: none;
+  cursor: pointer;
 }
 
 .section__part-added {
@@ -139,4 +141,5 @@ body {
   border: none;
   rotate: 45deg;
   font-size: 30px;
+  cursor: pointer;
 }
