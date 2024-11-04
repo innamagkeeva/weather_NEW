@@ -96,31 +96,41 @@ body {
 .part__temp {
   font-size: 24px;
   margin-bottom: 20px;
-  margin-left: 10px;
+  margin-left: 15px;
+  position: relative;
 }
 
 .part__temp-degrees {
-  display: inline-block;
-  position: relative;
+  display: inline;
   font-size: 82px;
 }
 
-.part__temp-span {
-  position: absolute;
-  top: 1em;
-  left: 1.5em;
-  font-size: 2.6em;
+.part__temp-degrees::after {
+  content: 'o';
+  position: relative;
+  top: -0.8em;
+  left: 0em;
+  font-size: 0.6em;
 }
 
-.part__img {
+.part__images {
   text-align: center;
   margin-bottom: 40px;
+}
+
+.part__images-img {
+  width: 80px;
+  height: 60px;
 }
 
 .part__footer {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 15px;
+}
+
+.cityName__text {
+  font-size: 25px;
 }
 
 .part__footer-button {
@@ -141,16 +151,25 @@ body {
   font-size: 24px;
 }
 
-.section__part-li {
+.list_li {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 10px;
-  height: 50px;
+  height: 45px;
   font-size: 30px;
 }
+.list__button-city {
+  background-color: white;
+  border: none;
+}
 
-.section__part-delete {
+.list__button-text {
+  line-height: 30px;
+  font-size: 20px;
+}
+
+.list_button-delete {
   background-color: white;
   border: none;
   rotate: 45deg;
