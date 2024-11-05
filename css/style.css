@@ -151,10 +151,10 @@ body {
   font-size: 24px;
 }
 
-/* .list {
+.list {
   overflow-y: auto;
   height: 253px;
-}   */
+}
 
 .list_li {
   display: flex;

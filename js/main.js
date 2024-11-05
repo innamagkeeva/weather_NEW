@@ -72,7 +72,7 @@ function createButtonDelete() {
   const newButtonDelete = document.createElement('button')
   newButtonDelete.className = 'list__button-delete'
   newButtonDelete.textContent = '+' //НУЖНА ЛИ ЭТА СТРОЧКА
-  newButtonDelete.addEventListener('click', deleteCity())
+  newButtonDelete.addEventListener('click', deleteCity)
   return newButtonDelete
 }
 
