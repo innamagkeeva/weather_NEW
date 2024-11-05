@@ -151,25 +151,25 @@ body {
   font-size: 24px;
 }
 
+/* .list {
+  overflow-y: auto;
+  height: 253px;
+}   */
+
 .list_li {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 10px;
   height: 45px;
-  font-size: 30px;
 }
 .list__button-city {
   background-color: white;
   border: none;
+  font-size: 25px;
 }
 
-.list__button-text {
-  line-height: 30px;
-  font-size: 20px;
-}
-
-.list_button-delete {
+.list__button-delete {
   background-color: white;
   border: none;
   rotate: 45deg;

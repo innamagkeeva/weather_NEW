@@ -36,14 +36,9 @@ function getCityName(e) {
         //  ВОПРОС !!!!!: нужна ли эта строчка??
       }
 
-      clearInput()
       console.log(data)
     })
   console.log(cityName)
-}
-
-function clearInput() {
-  UI.FORM_INPUT.value = ' '
 }
 
 function addCityName(e) {
@@ -55,7 +50,13 @@ function addCityName(e) {
   UI.LIST.append(newLi) //в список добавляю этот нов. элемент
 
   newLi.append(createButtonText(UI.FORM_INPUT.value))
-  newLi.append(createButtonDelete)
+  newLi.append(createButtonDelete())
+
+  clearInput()
+}
+
+function clearInput() {
+  UI.FORM_INPUT.value = ' '
 }
 
 function createButtonText() {
@@ -71,10 +72,10 @@ function createButtonDelete() {
   const newButtonDelete = document.createElement('button')
   newButtonDelete.className = 'list__button-delete'
   newButtonDelete.textContent = '+' //НУЖНА ЛИ ЭТА СТРОЧКА
-  newButtonDelete.addEventListener('click', deleteCity)
+  newButtonDelete.addEventListener('click', deleteCity())
   return newButtonDelete
 }
 
 function deleteCity(e) {
-  e = target.parentNode.remove()
+  e.target.parentNode.remove()
 }
