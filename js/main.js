@@ -30,16 +30,14 @@ function getCityName(e) {
       UI.PART_TEMPERATURE.textContent = Math.round(data.main.temp - 273)
 
       // если оставляю один иф - то картинка меняется. если открываю все - не меняется. пробовала написать else if все равно не работает.
-      if ((data.weather.main = 'Clouds')) {
-        UI.PART_IMG.src = './img/clouds.svg'
+      if (data.weather[0].main === 'Clouds') {
+        UI.PART_IMG.src = '../img/clouds.svg'
         UI.PART_IMG.alt = 'картинка облаков'
-      }
-      if ((data.weather.main = 'Rain')) {
-        UI.PART_IMG.src = './img/rain.svg'
+      } else if (data.weather[0].main === 'Rain') {
+        UI.PART_IMG.src = '../img/rain.svg'
         UI.PART_IMG.alt = 'картинка дождя'
-      }
-      if ((data.weather.main = 'clear')) {
-        UI.PART_IMG.src = './img/sun.svg'
+      } else if (data.weather[0].main === 'Clear') {
+        UI.PART_IMG.src = '../img/sun.svg'
         UI.PART_IMG.alt = 'картинка солнца'
       }
       console.log(data)
