@@ -24,15 +24,25 @@ ul {
 
 body {
   background-color: gray;
-  padding-top: 130px;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+}
+
+button {
+  padding: 0;
+  background-color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .weather {
   max-width: 621px;
+  width: 100%;
   min-height: 383px;
   background-color: white;
   margin: 0 auto;
-  position: relative;
+  padding: 12px;
 }
 
 .weather__inner {
@@ -40,10 +50,6 @@ body {
   width: 100%;
   min-height: 359px;
   border: 1px solid black;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .form {
@@ -52,29 +58,17 @@ body {
   border-bottom: 1px solid black;
   padding: 7px;
   display: flex;
-  justify-content: space-between;
 }
 
 .form__input {
   width: 100%;
-  position: relative;
   border: none;
+  outline: 0;
 }
 
 .form__button {
-  background-color: white;
-  border: none;
   width: 30px;
   height: 30px;
-  padding-right: 5px;
-  cursor: pointer;
-  position: relative;
-}
-
-.form__button-img {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .section {
@@ -88,34 +82,30 @@ body {
   width: 50%;
 }
 
-.section__part-border {
-  padding-top: 10px;
+.section__part-left {
+  padding: 10px;
   border-right: 1px solid black;
 }
 
 .part__temp {
   font-size: 24px;
-  margin-bottom: 20px;
-  margin-left: 15px;
-  position: relative;
+  margin-bottom: 30px;
 }
 
 .part__temp-degrees {
-  display: inline;
   font-size: 82px;
+  position: relative;
 }
 
 .part__temp-degrees::after {
   content: 'o';
-  position: relative;
-  top: -0.8em;
-  left: 0em;
-  font-size: 0.6em;
+  position: absolute;
+  font-size: 40px;
 }
 
 .part__images {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .part__images-img {
@@ -126,17 +116,10 @@ body {
 .part__footer {
   display: flex;
   justify-content: space-between;
-  padding: 15px;
 }
 
 .cityName__text {
   font-size: 25px;
-}
-
-.part__footer-button {
-  background-color: white;
-  border: none;
-  cursor: pointer;
 }
 
 .section__part-added {
@@ -161,18 +144,14 @@ body {
   justify-content: space-between;
   align-items: center;
   margin: 10px;
-  height: 45px;
+  height: 38px;
 }
+
 .list__button-city {
-  background-color: white;
-  border: none;
   font-size: 25px;
 }
 
 .list__button-delete {
-  background-color: white;
-  border: none;
   rotate: 45deg;
   font-size: 30px;
-  cursor: pointer;
 }

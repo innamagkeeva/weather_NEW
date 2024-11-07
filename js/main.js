@@ -11,7 +11,7 @@ console.log(UI.FORM)
 function getCityName(e) {
   e.preventDefault() // отмена перезагрузки страницы
 
-  const serverUrl = 'http://api.openweathermap.org/data/2.5/weather'
+  const serverUrl = 'https://api.openweathermap.org/data/2.5/weather'
   const cityName = UI.FORM_INPUT.value
   const apikey = 'f660a2fb1e4bad108d6160b7f58c555f'
   const url = `${serverUrl}?q=${cityName}&appid=${apikey}`
@@ -29,49 +29,51 @@ function getCityName(e) {
       // а температура округляется до целого числа и вносится сюда:
       UI.PART_TEMPERATURE.textContent = Math.round(data.main.temp - 273)
 
-      // тут потом добавлю еще if -  если дождь.Сейчас не нахожу как это пишется в data..
-      if ((data.weather.description = 'clear sky')) {
+      //
+      if ((data.weather.main = 'Clouds')) {
+        UI.PART_IMG.src = './img/clouds.svg'
+        UI.PART_IMG.alt = 'картинка облаков'
+      } else if ((data.weather.main = 'Rain')) {
+        UI.PART_IMG.src = './img/rain.svg'
+        UI.PART_IMG.alt = 'картинка дождя'
+      } else if ((data.weather.main = 'Sun')) {
         UI.PART_IMG.src = './img/sun.svg'
-        // UI.PART_IMG.alt = 'картинка солнца'
-        //  ВОПРОС !!!!!: нужна ли эта строчка??
+        UI.PART_IMG.alt = 'картинка солнца'
       }
-
       console.log(data)
     })
   console.log(cityName)
 }
 
-function addCityName(e) {
+function addCityName() {
   //функция кот создает новый эл.в который добавляется кнопка с названием города и кнопка для удаления элемента. и этот эл добавляется в список.
-  e.preventDefault()
-
   const newLi = document.createElement('li') //создаю новый элемент
   newLi.className = 'list_li' //присваиваю ему класс
   UI.LIST.append(newLi) //в список добавляю этот нов. элемент
 
-  newLi.append(createButtonText(UI.FORM_INPUT.value))
-  newLi.append(createButtonDelete())
+  newLi.append(createButtonText(UI.FORM_INPUT.value)) //для всех новых ли
+  newLi.append(createButtonDelete()) //так же для всех новых ли
 
   clearInput()
 }
 
 function clearInput() {
-  UI.FORM_INPUT.value = ' '
+  UI.FORM_INPUT.value = ''
 }
 
 function createButtonText() {
   //функция создает кнопку в кот будет попадать назв города, которое мы искали. те ввели в поиск.
-  let newButtonText = document.createElement('button')
+  const newButtonText = document.createElement('button') //создается новая кнопка,в кот добавится наз города из инпута
   newButtonText.className = 'list__button-city'
-  newButtonText.textContent = UI.FORM_INPUT.value
-  return newButtonText
+  newButtonText.textContent = UI.FORM_INPUT.value //город из инпута кладется в кнопку
+  return newButtonText // возвращается кнопка вместе с текстом-назв города из инпута.
 }
 
 function createButtonDelete() {
   //функ создает кнопку удаления элемента из списка
   const newButtonDelete = document.createElement('button')
   newButtonDelete.className = 'list__button-delete'
-  newButtonDelete.textContent = '+' //НУЖНА ЛИ ЭТА СТРОЧКА
+  newButtonDelete.textContent = '+'
   newButtonDelete.addEventListener('click', deleteCity)
   return newButtonDelete
 }
