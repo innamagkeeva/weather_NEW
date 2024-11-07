@@ -137,13 +137,14 @@ button {
 .list {
   overflow-y: auto;
   height: 253px;
+  padding: 10px;
 }
 
 .list_li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px;
+  margin-bottom: 10px;
   height: 38px;
 }
 

@@ -29,14 +29,16 @@ function getCityName(e) {
       // а температура округляется до целого числа и вносится сюда:
       UI.PART_TEMPERATURE.textContent = Math.round(data.main.temp - 273)
 
-      //
+      // если оставляю один иф - то картинка меняется. если открываю все - не меняется. пробовала написать else if все равно не работает.
       if ((data.weather.main = 'Clouds')) {
         UI.PART_IMG.src = './img/clouds.svg'
         UI.PART_IMG.alt = 'картинка облаков'
-      } else if ((data.weather.main = 'Rain')) {
+      }
+      if ((data.weather.main = 'Rain')) {
         UI.PART_IMG.src = './img/rain.svg'
         UI.PART_IMG.alt = 'картинка дождя'
-      } else if ((data.weather.main = 'Sun')) {
+      }
+      if ((data.weather.main = 'clear')) {
         UI.PART_IMG.src = './img/sun.svg'
         UI.PART_IMG.alt = 'картинка солнца'
       }
