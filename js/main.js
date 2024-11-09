@@ -25,7 +25,7 @@ function getCityName(e) {
     })
     .then((data) => {
       // после ответа с сервера, из data берется название города и заносится в поле внизу .
-      UI.CITY_NAME.textContent = data.name
+      UI.CITY_NAME.textContent = data.name.trim()
       // а температура округляется до целого числа и вносится сюда:
       UI.PART_TEMPERATURE.textContent = Math.round(data.main.temp - 273)
 
@@ -41,18 +41,25 @@ function getCityName(e) {
         UI.PART_IMG.alt = 'картинка солнца'
       }
       console.log(data)
+
+      UI.FOOTER.addEventListener('click', addLike)
     })
   console.log(cityName)
+}
+
+function addLike() {
+  UI.SVG_LIKE.classList.add('like')
 }
 
 function addCityName() {
   //функция кот создает новый эл.в который добавляется кнопка с названием города и кнопка для удаления элемента. и этот эл добавляется в список.
   const newLi = document.createElement('li') //создаю новый элемент
   newLi.className = 'list_li' //присваиваю ему класс
-  UI.LIST.append(newLi) //в список добавляю этот нов. элемент
 
-  newLi.append(createButtonText(UI.FORM_INPUT.value)) //для всех новых ли
+  newLi.append(createButton())
+  newLi.append(createButtonText()) //для всех новых ли
   newLi.append(createButtonDelete()) //так же для всех новых ли
+  UI.LIST.append(newLi) //в список добавляю этот нов. элемент
 
   clearInput()
 }
@@ -60,12 +67,24 @@ function addCityName() {
 function clearInput() {
   UI.FORM_INPUT.value = ''
 }
+//функция создает кнопку в кот будет попадать назв города, которое мы искали. те ввели в поиск.
+function createButton() {
+  const newButton = document.createElement('button') //создается новая кнопка
+  newButton.className = 'list__button-city' //новой кнопке присв класс
+  console.log(newButton)
+
+  return newButton
+}
 
 function createButtonText() {
-  //функция создает кнопку в кот будет попадать назв города, которое мы искали. те ввели в поиск.
-  const newButtonText = document.createElement('button') //создается новая кнопка,в кот добавится наз города из инпута
-  newButtonText.className = 'list__button-city'
-  newButtonText.textContent = UI.FORM_INPUT.value //город из инпута кладется в кнопку
+  const newButtonText = document.createElement('p')
+  newButtonText.className = 'list__button-text'
+  const newText = UI.FORM_INPUT.value.trim()
+  const normalizeNewText = newText.charAt(0).toUpperCase() + newText.slice(1) // ВОПРОС: в консоле выводит с пробелами и с мал буквы, а на сайте как надо
+
+  newButtonText.textContent = normalizeNewText
+  console.log(newButtonText)
+
   return newButtonText // возвращается кнопка вместе с текстом-назв города из инпута.
 }
 

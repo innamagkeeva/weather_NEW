@@ -8,7 +8,9 @@ const UI = {
   PART_IMAGES: document.querySelector('.part__images'),
   PART_IMG: document.querySelector('.part__images-img'),
   CITY_NAME: document.querySelector('.cityName__text'),
+  FOOTER: document.querySelector('.part__footer'),
   FOOTER_BUTTON: document.querySelector('.part__footer-button'),
+  SVG_LIKE: document.querySelector('.svg-like'),
   LIST: document.querySelector('.list'),
 }
 console.log(UI)
