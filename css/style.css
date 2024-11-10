@@ -148,19 +148,19 @@ button {
 
 .list_li {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   margin-bottom: 10px;
   height: 38px;
 }
 
 .list__button-city {
-  font-size: 30px;
+  font-size: 25px;
 }
 
-.list__button-text {
+/* .list__button-text {
   font-size: 25px;
   width: 100%;
-}
+} */
 
 .list__button-delete {
   rotate: 45deg;
