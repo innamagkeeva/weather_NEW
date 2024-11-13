@@ -124,7 +124,7 @@ button {
   justify-content: space-between;
 }
 
-.cityName__text {
+.cityName {
   font-size: 25px;
 }
 
@@ -150,17 +150,11 @@ button {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  height: 38px;
 }
 
 .list__button-city {
   font-size: 25px;
 }
-
-/* .list__button-text {
-  font-size: 25px;
-  width: 100%;
-} */
 
 .list__button-delete {
   rotate: 45deg;
