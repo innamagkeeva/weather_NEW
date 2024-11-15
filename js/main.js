@@ -1,38 +1,11 @@
 import UI from './ui.js'
-// console.log(UI)
 
-const favoriteCities = []
+let favoriteCities = []
 
+loadCitiesFromLocalStorage()
 // вешаю обработчика события на форму, и при нажатии на поиск или enter вызывается функция getCityName
 UI.FORM.addEventListener('submit', getCityName)
 UI.FOOTER_BUTTON.addEventListener('click', addCityName)
-
-//вешаю обработчика события на инпут , кот вызовет функ проверки инпута
-UI.FORM_INPUT.addEventListener('input', checkInput)
-
-UI.CITY_NAME.addEventListener('click', checkFooterButton)
-
-console.log(UI.FORM)
-//
-function checkInput() {
-  const inputValue = UI.FORM_INPUT.value.trim() //переменная кот присвоили значение инпута
-  if (inputValue) {
-    //если в инпуте текст есть..........
-    UI.FORM_BUTTON.removeAttribute('disabled') // то атрибут, отключающий кнопку убирается и кнопка работает
-  } else {
-    //иначе (т е если текста нет)
-    UI.FORM_BUTTON.setAttribute('disabled', '') //то атрибут вставляется и отключает кнопку отправки
-  }
-}
-
-function checkFooterButton() {
-  const footerValue = UI.CITY_NAME.value.trim()
-  if (footerValue) {
-    UI.FOOTER_BUTTON.removeAttribute('disabled')
-  } else {
-    UI.FOOTER_BUTTON.setAttribute('disabled', '')
-  }
-}
 
 // Функция, которая которая берет название города , введенного в input. подставляет его в url адрес и отправляет на сервер. и получает ответ с данными погоды.
 function getCityName(e) {
@@ -53,7 +26,7 @@ function getCityName(e) {
     })
     .then((data) => {
       // после ответа с сервера, из data берется название города и заносится в поле внизу .
-      UI.CITY_NAME.textContent = data.name
+      UI.CITY_NAME.textContent = data.name.trim()
       // а температура округляется до целого числа и вносится сюда:
       UI.PART_TEMPERATURE.textContent = Math.round(data.main.temp - 273)
 
@@ -79,30 +52,50 @@ function addLike() {
 
 function addCityName() {
   //функция кот создает новый эл.в который добавляется кнопка с названием города и кнопка для удаления элемента. и этот эл добавляется в список.
+  // Создает новый элемент, который добавляется в список
+  const cityName = UI.CITY_NAME.textContent.trim()
+
+  if (!cityName || favoriteCities.includes(cityName)) {
+    return // Не добавляем пустые названия или дубли
+  }
+
   addLike()
   const newLi = document.createElement('li') //создаю новый элемент
   newLi.className = 'list_li' //присваиваю ему класс
 
-  newLi.append(createButton()) // создаю кнопку, которая принимает значение - назв города.
+  favoriteCities.push(cityName)
+  newLi.append(createButton(cityName)) // создаю кнопку, которая принимает значение - назв города.
   newLi.append(createButtonDelete()) // для всех новых ли
   UI.LIST.append(newLi) //в список добавляю этот нов. элемент
-  favoriteCities.push(UI.CITY_NAME.textContent)
 
-  clearInput()
+  saveToLocalStorage() //вызываю функ,кот сохраняет данные в localStorage
+
+  clearInput() //инпут очищается
+  console.log(favoriteCities)
+}
+
+function saveToLocalStorage() {
+  localStorage.setItem('favoriteCities', JSON.stringify(favoriteCities)) //у элемента переводит данные в вид "строка" и сохраняет в localStorage.
+}
+
+//загружает города из localStorage
+function loadCitiesFromLocalStorage() {
+  const storedCities = JSON.parse(localStorage.getItem('favoriteCities')) || [] // переменная, кот присваиваем элемент из localStorage
+  storedCities.forEach((city) => {
+    addCityName(city) // и для каждого города создается новый li
+  })
 }
 
 function clearInput() {
-  UI.FORM_INPUT.value = ''
+  UI.FORM_INPUT.value = '' // у инпута пустая строка.
 }
 
 //функция создает кнопку в кот будет попадать назв города, которое мы искали. те ввели в поиск.
-function createButton() {
+function createButton(cityName) {
   const newButton = document.createElement('button') //создается новая кнопка
   newButton.className = 'list__button-city' //новой кнопке присв класс
 
-  const newText = UI.CITY_NAME.value.trim()
-  const normalizeNewText = newText.charAt(0).toUpperCase() + newText.slice(1)
-  newButton.textContent = normalizeNewText
+  newButton.textContent = cityName // текст контент у кнопки
 
   console.log(newButton)
 
@@ -119,8 +112,18 @@ function createButtonDelete() {
 }
 
 function deleteCity(e) {
-  // dataCity = dataCity.filter(
-  //   (city) => city !== e.target.previousSibling.textContent
-  // )
+  const cityText =
+    e.target.parentNode.querySelector('.list__button-city').textContent
+
+  if (UI.LIST.contains(e.target.parentNode)) {
+    const index = favoriteCities.indexOf(cityText)
+    if (index !== -1) {
+      favoriteCities.splice(index, 1)
+    }
+  }
+
+  saveToLocalStorage() // загружаю новые данные из localStorage
+
   e.target.parentNode.remove()
+  console.log(favoriteCities)
 }

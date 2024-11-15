@@ -13,6 +13,5 @@ const UI = {
   SVG_LIKE: document.querySelector('.svg-like'),
   LIST: document.querySelector('.list'),
 }
-console.log(UI)
 
 export default UI
