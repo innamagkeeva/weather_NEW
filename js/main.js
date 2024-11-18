@@ -13,7 +13,7 @@ function getCityName(e) {
 
   const serverUrl = 'https://api.openweathermap.org/data/2.5/weather'
   const cityName = UI.FORM_INPUT.value.trim()
-  const apikey = 'f660a2fb1e4bad108d6160b7f58c555f'
+  const apikey = '3d8af9f7ae111ad0770a6a9d37546134'
   const url = `${serverUrl}?q=${cityName}&appid=${apikey}`
 
   if (!cityName) {
@@ -43,6 +43,9 @@ function getCityName(e) {
       console.log(data)
       // вешаю обработчик соб на нижнее поле . при клике на сердеечко вызывается ф addLike
     })
+
+  clearInput() //инпут очищается
+
   console.log(cityName)
 }
 
@@ -68,7 +71,6 @@ function addCityName() {
 
   saveToLocalStorage() //вызываю функ,кот сохраняет данные в localStorage
 
-  clearInput() //инпут очищается
   console.log(favoriteCities)
 }
 
