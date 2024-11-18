@@ -60,13 +60,11 @@ function addCityName() {
   }
 
   addLike()
+
   const newLi = document.createElement('li') //создаю новый элемент
   newLi.className = 'list_li' //присваиваю ему класс
 
-  favoriteCities.push(cityName)
-  newLi.append(createButton(cityName)) // создаю кнопку, которая принимает значение - назв города.
-  newLi.append(createButtonDelete()) // для всех новых ли
-  UI.LIST.append(newLi) //в список добавляю этот нов. элемент
+  addCity(cityName)
 
   saveToLocalStorage() //вызываю функ,кот сохраняет данные в localStorage
 
@@ -80,10 +78,19 @@ function saveToLocalStorage() {
 
 //загружает города из localStorage
 function loadCitiesFromLocalStorage() {
-  const storedCities = JSON.parse(localStorage.getItem('favoriteCities')) || [] // переменная, кот присваиваем элемент из localStorage
+  const storedCities = JSON.parse(localStorage.getItem('favoriteCities')) || [] // переменная, кот присваиваем элемент из localStorage или пустой массив
   storedCities.forEach((city) => {
-    addCityName(city) // и для каждого города создается новый li
+    addCity(city) // и для каждого города создается новый li
   })
+}
+
+function addCity(cityName) {
+  favoriteCities.push(cityName) // беру из localStorage название города и добавляю его в массив
+  const newLi = document.createElement('li') // создаю новый элемент li
+  newLi.className = 'list_li' // присваиваю ему класс
+  newLi.append(createButton(cityName)) // создаю кнопку для всех нов ли с названием города
+  newLi.append(createButtonDelete()) // создаю кнопку удаления для всех новых ли
+  UI.LIST.append(newLi) // добавляем элемент в список
 }
 
 function clearInput() {
@@ -123,7 +130,6 @@ function deleteCity(e) {
   }
 
   saveToLocalStorage() // загружаю новые данные из localStorage
-
   e.target.parentNode.remove()
   console.log(favoriteCities)
 }
