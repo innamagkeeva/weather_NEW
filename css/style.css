@@ -1,3 +1,8 @@
+.like path {
+  fill: red;
+  stroke: red;
+}
+
 html {
   box-sizing: border-box;
 }
@@ -61,6 +66,7 @@ button {
 }
 
 .form__input {
+  font-size: 20px;
   width: 100%;
   border: none;
   outline: 0;
@@ -118,7 +124,7 @@ button {
   justify-content: space-between;
 }
 
-.cityName__text {
+.cityName {
   font-size: 25px;
 }
 
@@ -143,9 +149,7 @@ button {
 .list_li {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 10px;
-  height: 38px;
 }
 
 .list__button-city {
