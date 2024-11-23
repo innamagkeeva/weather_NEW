@@ -71,11 +71,18 @@ function getCityWeather(cityName) {
     return
   }
 
+  const loader = document.querySelector('.loader')
+  loader.style.display = 'flex'
+
   fetch(url)
     .then((response) => {
+      if (!response.ok) {
+        throw new Error('Ошибка сети')
+      }
       return response.json() // Преобразование ответа в JSON
     })
     .then((data) => {
+      loader.style.display = 'none'
       // после ответа с сервера, из data берется название города и заносится в поле внизу .
       UI.CITY_NAME.textContent = data.name.trim()
       // а температура округляется до целого числа и вносится сюда:
@@ -94,6 +101,7 @@ function getCityWeather(cityName) {
       console.log(data)
     })
     .catch((err) => {
+      loader.style.display = 'none'
       console.error('ошибка при получении данных:', err)
       alert(
         `не удалось загрузить данные для '${cityName}'. Попробуйте еще раз.`
