@@ -7,6 +7,7 @@ loadCitiesFromLocalStorage() //при перезагрузки сразу выз
 
 UI.FORM.addEventListener('submit', getCityName) // вешаю обр соб на форму, и при нажатии на поиск или enter выз-ся функ getCityName
 UI.FOOTER_BUTTON.addEventListener('click', addCityName) // вешаю обр соб на кнопку футера, и при нажатии на нее выз-ся функ getCityName
+UI.CLOSE_BUTTON.addEventListener('click', closePopup)
 
 // Функция, которая которая берет название города , введенного в input. подставляет его в url адрес и отправляет на сервер. и получает ответ с данными погоды.
 function getCityName(e) {
@@ -30,9 +31,9 @@ function addCityName() {
     return // Не добавляем пустые названия или дубли
   }
 
-  addLike()
-
   addCity(cityName)
+
+  addLike()
 
   saveToLocalStorage() //вызываю функция,кот сохраняет данные в localStorage
 
@@ -71,8 +72,7 @@ function getCityWeather(cityName) {
     return
   }
 
-  const loader = document.querySelector('.loader')
-  loader.style.display = 'flex'
+  UI.LOADER.classList.add('loaderStyle')
 
   fetch(url)
     .then((response) => {
@@ -82,7 +82,6 @@ function getCityWeather(cityName) {
       return response.json() // Преобразование ответа в JSON
     })
     .then((data) => {
-      loader.style.display = 'none'
       // после ответа с сервера, из data берется название города и заносится в поле внизу .
       UI.CITY_NAME.textContent = data.name.trim()
       // а температура округляется до целого числа и вносится сюда:
@@ -101,13 +100,15 @@ function getCityWeather(cityName) {
       console.log(data)
     })
     .catch((err) => {
-      loader.style.display = 'none'
       console.error('ошибка при получении данных:', err)
-      alert(
-        `не удалось загрузить данные для '${cityName}'. Попробуйте еще раз.`
-      )
+      UI.POPUP.classList.add('popupStyle')
     })
+    .finally(() => UI.LOADER.classList.remove('loaderStyle'))
 }
+
+function closePopup() {
+  UI.POPUP.classList.add('popupClose')
+} //функция добавляет класс, у которого в csss  - display: none;
 
 function clearInput() {
   UI.FORM_INPUT.value = '' // у инпута пустая строка.
