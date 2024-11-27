@@ -5,12 +5,12 @@ let favoriteCities = [] // создали переменную, в котору�
 
 loadCitiesFromLocalStorage() //при перезагрузки сразу выз-ся функ, кот загружает города из хранилища
 
-UI.FORM.addEventListener('submit', getCityName) // вешаю обр соб на форму, и при нажатии на поиск или enter выз-ся функ getCityName
-UI.FOOTER_BUTTON.addEventListener('click', addCityName) // вешаю обр соб на кнопку футера, и при нажатии на нее выз-ся функ getCityName
+UI.FORM.addEventListener('submit', getCityNameForRequest) // вешаю обр соб на форму, и при нажатии на поиск или enter выз-ся функ getCityName
+UI.FOOTER_BUTTON.addEventListener('click', addCityToFavorites) // вешаю обр соб на кнопку футера, и при нажатии на нее выз-ся функ getCityName
 UI.CLOSE_BUTTON.addEventListener('click', closePopup)
 
 // Функция, которая которая берет название города , введенного в input. подставляет его в url адрес и отправляет на сервер. и получает ответ с данными погоды.
-function getCityName(e) {
+function getCityNameForRequest(e) {
   e.preventDefault() // отмена перезагрузки страницы
 
   const cityName = UI.FORM_INPUT.value.trim() //конст, кот присваивается значение инпута без пробелов
@@ -23,15 +23,17 @@ function addLike() {
   UI.SVG_LIKE.classList.add('like') //добавляется класс лайк, в css которого команда окрасить сердечко в красный
 }
 
-function addCityName() {
-  //функция кот создает новый эл.в который добавляется кнопка с названием города и кнопка для удаления элемента. и этот эл добавляется в список.
+function removeLike() {
+  UI.SVG_LIKE.classList.remove('like')
+}
 
+function addCityToFavorites() {
   const cityName = UI.CITY_NAME.textContent.trim()
   if (!cityName || favoriteCities.includes(cityName)) {
     return // Не добавляем пустые названия или дубли
   }
 
-  addCity(cityName)
+  getNewElementForCity(cityName)
 
   addLike()
 
@@ -48,18 +50,22 @@ function saveToLocalStorage() {
 function loadCitiesFromLocalStorage() {
   const storedCities = JSON.parse(localStorage.getItem('favoriteCities')) || [] // переменная, кот присваиваем элемент из localStorage или пустой массив
   storedCities.forEach((city) => {
-    addCity(city) // и для каждого города создается новый li
+    getNewElementForCity(city) // и для каждого города создается новый li
   })
 }
 
-function addCity(cityName) {
+function getNewElementForCity(cityName) {
+  //функция кот создает новый эл.в который добавляется кнопка с названием города и кнопка для удаления элемента. и этот эл добавляется в список.
   favoriteCities.push(cityName) // беру из localStorage название города и добавляю его в массив
   const newLi = document.createElement('li') // создаю новый элемент li
   newLi.className = 'list_li' // присваиваю ему класс
-  const newButton = createButton(cityName) //создаем перем в кот помещаем данные о новой кнопки
+  const newButton = createButtonForCityName(cityName) //создаем перем в кот помещаем данные о новой кнопки
   newLi.append(newButton) // создаю кнопку для всех нов ли с названием города
 
-  newButton.addEventListener('click', () => getCityWeather(cityName)) // веш слуш соб на нов кнопку.При клике на нее отравляется запрос на сервер для получения данных о погоде данного города
+  newButton.addEventListener('click', () => {
+    getCityWeather(cityName)
+    addLike()
+  }) // веш слуш соб на нов кнопку.При клике на нее отравляется запрос на сервер для получения данных о погоде данного города
 
   newLi.append(createButtonDelete()) // создаю кнопку удаления для всех новых ли
   UI.LIST.append(newLi) // добавляем элемент в список
@@ -72,7 +78,7 @@ function getCityWeather(cityName) {
     return
   }
 
-  UI.LOADER.classList.add('loaderStyle')
+  UI.LOADER.classList.add('loader-style')
 
   fetch(url)
     .then((response) => {
@@ -84,30 +90,36 @@ function getCityWeather(cityName) {
     .then((data) => {
       // после ответа с сервера, из data берется название города и заносится в поле внизу .
       UI.CITY_NAME.textContent = data.name.trim()
+      if (!data.name.includes(cityName)) {
+        removeLike()
+      }
       // а температура округляется до целого числа и вносится сюда:
       UI.PART_TEMPERATURE.textContent = Math.round(data.main.temp - 273)
 
-      if (data.weather[0].main === 'Clouds') {
-        UI.PART_IMG.src = '../img/clouds.svg'
-        UI.PART_IMG.alt = 'картинка облаков'
-      } else if (data.weather[0].main === 'Rain') {
-        UI.PART_IMG.src = '../img/rain.svg'
-        UI.PART_IMG.alt = 'картинка дождя'
-      } else if (data.weather[0].main === 'Clear') {
-        UI.PART_IMG.src = '../img/sun.svg'
-        UI.PART_IMG.alt = 'картинка солнца'
-      }
-      console.log(data)
+      getImgWeather(data)
     })
     .catch((err) => {
       console.error('ошибка при получении данных:', err)
-      UI.POPUP.classList.add('popupStyle')
+      UI.POPUP.classList.add('popup-style')
     })
-    .finally(() => UI.LOADER.classList.remove('loaderStyle'))
+    .finally(() => UI.LOADER.classList.remove('loader-style'))
+}
+
+function getImgWeather(data) {
+  if (data.weather[0].main === 'Clouds') {
+    UI.PART_IMG.src = '../img/clouds.svg'
+    UI.PART_IMG.alt = 'картинка облаков'
+  } else if (data.weather[0].main === 'Rain') {
+    UI.PART_IMG.src = '../img/rain.svg'
+    UI.PART_IMG.alt = 'картинка дождя'
+  } else if (data.weather[0].main === 'Clear') {
+    UI.PART_IMG.src = '../img/sun.svg'
+    UI.PART_IMG.alt = 'картинка солнца'
+  }
 }
 
 function closePopup() {
-  UI.POPUP.classList.add('popupClose')
+  UI.POPUP.classList.remove('popup-style')
 } //функция добавляет класс, у которого в csss  - display: none;
 
 function clearInput() {
@@ -115,7 +127,7 @@ function clearInput() {
 }
 
 //функция создает кнопку в кот будет попадать назв города, которое мы искали. те ввели в поиск.
-function createButton(cityName) {
+function createButtonForCityName(cityName) {
   const newButton = document.createElement('button') //создается новая кнопка
   newButton.className = 'list__button-city' //новой кнопке присв класс
   newButton.textContent = cityName // текст контент у кнопки
@@ -133,10 +145,12 @@ function createButtonDelete() {
 }
 
 function deleteCity(e) {
-  const cityText =
-    e.target.parentNode.querySelector('.list__button-city').textContent
+  const parentNode = e.target.parentNode
+  const cityText = parentNode.children[0].textContent
 
-  if (UI.LIST.contains(e.target.parentNode)) {
+  removeLike()
+
+  if (UI.LIST.contains(parentNode)) {
     const index = favoriteCities.indexOf(cityText)
     if (index !== -1) {
       favoriteCities.splice(index, 1)
@@ -144,6 +158,6 @@ function deleteCity(e) {
   }
 
   saveToLocalStorage() // загружаю новые данные из localStorage
-  e.target.parentNode.remove()
+  parentNode.remove()
   console.log(favoriteCities)
 }

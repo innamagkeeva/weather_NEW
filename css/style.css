@@ -88,7 +88,7 @@ button {
   }
 }
 
-.loaderStyle {
+.loader-style {
   display: flex;
 }
 
@@ -101,7 +101,6 @@ button {
   translate: -50% -50%;
   width: 300px;
   height: 100px;
-  /* color: red; */
   background-color: white;
   border: 1px solid red;
   padding-left: 10px;
@@ -114,25 +113,26 @@ button {
 }
 
 .popup__button-close {
-  width: 25px;
-  height: 25px;
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 7px;
+  right: 7px;
+  width: 30px;
+  height: 30px;
 }
 
-.popup__close-text {
-  font-size: 24px;
-  rotate: 45deg;
+.popup__button-close::before {
+  content: '+';
+  position: absolute;
+  font-size: 32px;
   color: blue;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  rotate: 45deg;
 }
 
-.popupStyle {
+.popup-style {
   display: flex;
-}
-
-.popupClose {
-  display: none;
 }
 
 .form {
