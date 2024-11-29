@@ -9,6 +9,13 @@
   <body>
     <div class="weather">
       <div class="weather__inner">
+        <div class="loader">
+          <div class="loader__spinner"></div>
+        </div>
+        <div class="popup">
+          <p class="popup__text">Ошибка получения данных</p>
+          <button class="popup__button-close"></button>
+        </div>
         <form class="form">
           <input
             class="form__input"
@@ -80,5 +87,6 @@
     </div>
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/ui.js"></script>
+    <script type="module" src="js/const.js"></script>
   </body>
 </html>
