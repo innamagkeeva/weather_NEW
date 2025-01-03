@@ -71,38 +71,74 @@ function getNewElementForCity(cityName) {
   UI.LIST.append(newLi) // добавляем элемент в список
 }
 
-function getCityWeather(cityName) {
+// function getCityWeather(cityName) {
+//   const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`
+
+//   if (!cityName) {
+//     return
+//   }
+
+//   UI.LOADER.classList.add('loader-style')
+
+//   fetch(url)
+//     .then((response) => {
+//       if (!response.ok) {
+//         throw new Error('Ошибка сети')
+//       }
+//       return response.json() // Преобразование ответа в JSON
+//     })
+//     .then((data) => {
+//       // после ответа с сервера, из data берется название города и заносится в поле внизу .
+//       UI.CITY_NAME.textContent = data.name.trim()
+//       if (!data.name.includes(cityName)) {
+//         removeLike()
+//       }
+//       а температура округляется до целого числа и вносится сюда:
+//       UI.PART_TEMPERATURE.textContent = Math.round(data.main.temp - 273)
+
+//       getImgWeather(data)
+//     })
+//     .catch((err) => {
+//       console.error('ошибка при получении данных:', err)
+//       UI.POPUP.classList.add('popup-style')
+//     })
+//     .finally(() => UI.LOADER.classList.remove('loader-style'))
+// }
+
+async function getCityWeather(cityName) {
   const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`
 
   if (!cityName) {
-    return
+    return // Если нет имени города, выходим из функции
   }
 
-  UI.LOADER.classList.add('loader-style')
+  UI.LOADER.classList.add('loader-style') // Показываем индикатор загрузки
 
-  fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Ошибка сети')
-      }
-      return response.json() // Преобразование ответа в JSON
-    })
-    .then((data) => {
-      // после ответа с сервера, из data берется название города и заносится в поле внизу .
-      UI.CITY_NAME.textContent = data.name.trim()
-      if (!data.name.includes(cityName)) {
-        removeLike()
-      }
-      // а температура округляется до целого числа и вносится сюда:
-      UI.PART_TEMPERATURE.textContent = Math.round(data.main.temp - 273)
+  try {
+    const response = await fetch(url) // ожидаем ответ от fetch
+    if (!response.ok) {
+      throw new Error('ошибка сети') // Генерируем ошибку, если статус ответа не OK
+    }
+    const data = await response.json() // Ожидаем преобразования ответа в JSON
 
-      getImgWeather(data)
-    })
-    .catch((err) => {
-      console.error('ошибка при получении данных:', err)
-      UI.POPUP.classList.add('popup-style')
-    })
-    .finally(() => UI.LOADER.classList.remove('loader-style'))
+    //  После получения ответа с сервера
+    UI.CITY_NAME.textContent = data.name.trim() // Устанавливаем название города с обрезанием пробелов.
+
+    if (!data.name.includes(cityName)) {
+      removeLike() // Удаляем лайк, если имя города не совпадает
+    }
+
+    // а температура округляется до целого числа и вносится сюда:
+    UI.PART_TEMPERATURE.textContent = Math.round(data.main.temp - 273)
+
+    getImgWeather(data) // Получаем изображение погоды
+  } catch (err) {
+    console.error('ошибка при получении данных', err) // обработка ошибок
+
+    UI.POPUP.classList.add('popup-style') // Показываем попап с ошибкой
+  } finally {
+    UI.LOADER.classList.remove('loader-style') // Убираем индикатор загрузки
+  }
 }
 
 function getImgWeather(data) {
