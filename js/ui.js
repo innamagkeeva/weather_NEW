@@ -12,6 +12,9 @@ const UI = {
   FOOTER_BUTTON: document.querySelector('.part__footer-button'),
   SVG_LIKE: document.querySelector('.svg-like'),
   LIST: document.querySelector('.list'),
+  LOADER: document.querySelector('.loader'),
+  POPUP: document.querySelector('.popup'),
+  CLOSE_BUTTON: document.querySelector('.popup__button-close'),
 }
 
 export default UI
